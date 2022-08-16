@@ -1,11 +1,9 @@
 <template>
-    <DrawingPad></DrawingPad>
+  <DrawingPad></DrawingPad>
 </template>
 
 <script>
-
 export default {
-    name: "DrawPage",
-
-};
+  name: 'DrawPage',
+}
 </script>
