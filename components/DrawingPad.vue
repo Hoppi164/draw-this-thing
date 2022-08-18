@@ -1,89 +1,82 @@
 <template>
   <div>
-    <h2>Drawing Pad</h2>
-
     <div class="p-4">
       <canvas
         id="canvas"
         height="512"
         width="512"
-        class="border rounded"
+        class="border rounded border-dark"
         @mousedown="startPainting"
         @mousemove="draw"
         @mouseup="finishedPainting"
       >
       </canvas>
     </div>
-    <h4>x:{{ x }}</h4>
-    <h4>y:{{ y }}</h4>
-    <h4>xoffset:{{ xoffset }}</h4>
-    <h4>yoffset:{{ yoffset }}</h4>
-    <h5>paths:{{ paths }}</h5>
   </div>
 </template>
 <script>
 export default {
   name: 'DrawingPad',
+  props: {
+    svgPath: {
+      type: String,
+      default: () => '',
+    },
+  },
   data() {
     return {
-      message: 'Hello Vue!',
-      vueCanvas: null,
-      painting: false,
+      isPainting: false,
       canvas: null,
       ctx: null,
-      x: 0,
-      y: 0,
-      xoffset: 0,
-      yoffset: 0,
-      paths: [],
     }
   },
-
   mounted() {
     this.canvas = document.getElementById('canvas')
     this.ctx = this.canvas.getContext('2d')
     this.ctx.webkitImageSmoothingEnabled = false
     this.ctx.mozImageSmoothingEnabled = false
     this.ctx.imageSmoothingEnabled = false
-    // Resize canvas
-    // this.canvas.height = window.innerHeight;
-    // this.canvas.width = window.innerWidth;
   },
   methods: {
-    startPainting(e) {
-      this.painting = true
-      console.log(this.painting)
-      this.draw(e)
+    getX(e) {
+      const rect = this.canvas.getBoundingClientRect()
+      return (
+        ((e.clientX - rect.left) / (rect.right - rect.left)) * this.canvas.width
+      )
     },
-
-    finishedPainting() {
-      this.painting = false
-      console.log(this.painting)
+    getY(e) {
+      const rect = this.canvas.getBoundingClientRect()
+      return (
+        ((e.clientY - rect.top) / (rect.bottom - rect.top)) * this.canvas.height
+      )
+    },
+    startPainting(e) {
+      this.isPainting = true
+      const startPath = this.svgPath + `M${this.getX(e)} ${this.getY(e)} `
+      this.draw(e, startPath)
+    },
+    finishedPainting(e) {
+      this.isPainting = false
+      const finishPath = this.svgPath + `M${this.getX(e)} ${this.getY(e)} `
+      this.updateSvgPath(finishPath)
       this.ctx.beginPath()
     },
-
-    draw(e) {
-      const rect = this.canvas.getBoundingClientRect()
-
-      this.x = e.clientX
-      this.y = e.clientY
-      this.xoffset = this.canvas.offsetLeft
-      this.yoffset = this.canvas.offsetTop
-      const newX =
-        ((e.clientX - rect.left) / (rect.right - rect.left)) * this.canvas.width
-      const newY =
-        ((e.clientY - rect.top) / (rect.bottom - rect.top)) * this.canvas.height
-
-      if (!this.painting) return
-      console.log(this.canvas)
-
+    draw(e, startPath = '') {
+      if (!this.isPainting) {
+        return
+      }
+      const newX = this.getX(e)
+      const newY = this.getY(e)
       this.ctx.lineWidth = 2
       this.ctx.lineCap = 'round'
       this.ctx.lineTo(newX, newY)
       this.ctx.stroke()
       this.ctx.beginPath()
       this.ctx.moveTo(newX, newY)
-      this.paths.push({ x: newX, y: newY })
+      this.updateSvgPath(`${startPath || this.svgPath}L${newX} ${newY} `)
+    },
+    updateSvgPath(newValue) {
+      this.$emit('update:svgPath', newValue)
     },
   },
 }
