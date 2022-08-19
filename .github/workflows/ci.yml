@@ -9,10 +9,9 @@ on:
     branches:
       - main
       - master
-  
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -22,10 +21,9 @@ permissions:
 
 # Allow one concurrent deployment
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: true
 
-  
 jobs:
   ci:
     runs-on: ${{ matrix.os }}
