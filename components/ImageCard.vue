@@ -18,7 +18,6 @@
           :d="svgPath + ' Z'"
         />
       </svg>
-      imgcard{{ svgPath }}
     </div>
     <button class="btn btn-dark ml-4" @click="downloadSvg">Download SVG</button>
   </div>
@@ -35,8 +34,8 @@ export default {
   methods: {
     downloadSvg() {
       const svgString = this.$el.firstChild.firstChild.outerHTML
-      // alert(svgString);
-      alert(this.getOptimizedSvg(svgString))
+      alert(svgString)
+      // alert(this.getOptimizedSvg(svgString))
     },
   },
 }
