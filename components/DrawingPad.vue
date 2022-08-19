@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="p-4">
+    <div class="p-4 responsiveSize">
       <canvas
         id="canvas"
-        height="512"
-        width="512"
-        class="border rounded border-dark"
+        class="border rounded border-dark h-100 w-100"
+        height="100"
+        width="100"
         @mousedown="startPainting"
         @mousemove="draw"
         @mouseup="finishedPainting"
@@ -18,9 +18,9 @@
 export default {
   name: 'DrawingPad',
   props: {
-    svgPath: {
-      type: String,
-      default: () => '',
+    paths: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {
@@ -28,6 +28,7 @@ export default {
       isPainting: false,
       canvas: null,
       ctx: null,
+      currentPath: [],
     }
   },
   mounted() {
@@ -52,16 +53,17 @@ export default {
     },
     startPainting(e) {
       this.isPainting = true
-      const startPath = this.svgPath + `M${this.getX(e)} ${this.getY(e)} `
-      this.draw(e, startPath)
+      this.currentPath = []
+      this.draw(e)
     },
     finishedPainting(e) {
       this.isPainting = false
-      const finishPath = this.svgPath + `M${this.getX(e)} ${this.getY(e)} `
-      this.updateSvgPath(finishPath)
       this.ctx.beginPath()
+      const newPaths = this.paths
+      newPaths.push(this.currentPath)
+      this.updatePaths(newPaths)
     },
-    draw(e, startPath = '') {
+    draw(e) {
       if (!this.isPainting) {
         return
       }
@@ -73,11 +75,19 @@ export default {
       this.ctx.stroke()
       this.ctx.beginPath()
       this.ctx.moveTo(newX, newY)
-      this.updateSvgPath(`${startPath || this.svgPath}L${newX} ${newY} `)
+      this.currentPath.push([newX, newY])
     },
-    updateSvgPath(newValue) {
-      this.$emit('update:svgPath', newValue)
+
+    updatePaths(newValue) {
+      this.$emit('update:paths', newValue)
     },
   },
 }
 </script>
+
+<style scoped>
+.responsiveSize {
+  width: 100%;
+  aspect-ratio: 1;
+}
+</style>

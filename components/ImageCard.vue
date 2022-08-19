@@ -1,36 +1,47 @@
 <template>
   <div>
-    <div class="p-4">
+    <div class="p-4 responsiveSize">
       <!-- SVG Must Be First Child -->
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 512 512"
-        height="512"
-        width="512"
-        class="border rounded border-dark"
+        class="border rounded border-dark w-100 h-100"
+        viewBox="0 0 100 100"
       >
-        <path
+        <!-- <path
           stroke="black"
           stroke-width="2"
           stroke-linecap="round"
           fill="none"
           stroke-linejoin="round"
-          :d="svgPath + ' Z'"
+          :d="svgPath + 'Z'"
+        /> -->
+        <polyline
+          v-for="(path, index) in paths"
+          :key="index"
+          stroke="black"
+          stroke-width="2"
+          stroke-linecap="round"
+          fill="none"
+          stroke-linejoin="round"
+          :points="path.toString()"
         />
       </svg>
+      <button class="btn btn-dark w-100 mt-1" @click="downloadSvg">
+        Download SVG
+      </button>
     </div>
-    <button class="btn btn-dark ml-4" @click="downloadSvg">Download SVG</button>
   </div>
 </template>
 <script>
 export default {
   name: 'ImageCard',
   props: {
-    svgPath: {
-      type: String,
-      default: () => '',
+    paths: {
+      type: Array,
+      default: () => [],
     },
   },
+
   methods: {
     downloadSvg() {
       const svgString = this.$el.firstChild.firstChild.outerHTML
@@ -40,3 +51,9 @@ export default {
   },
 }
 </script>
+<style scoped>
+.responsiveSize {
+  width: 100%;
+  aspect-ratio: 1;
+}
+</style>
