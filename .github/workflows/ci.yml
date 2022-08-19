@@ -9,7 +9,23 @@ on:
     branches:
       - main
       - master
+  
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+  
 jobs:
   ci:
     runs-on: ${{ matrix.os }}
@@ -29,6 +45,12 @@ jobs:
           node-version: ${{ matrix.node }}
           check-latest: true
 
+      - name: Setup Github Pages 📄
+        id: pages
+        uses: actions/configure-pages@v1
+        with:
+          static_site_generator: nuxt
+
       - name: Cache node_modules 📦
         uses: actions/cache@v2.1.4
         with:
@@ -45,3 +67,22 @@ jobs:
 
       - name: Run tests 🧪
         run: npm run test
+
+      - name: Static HTML export with Nuxt
+        run: ${{ steps.detect-package-manager.outputs.manager }} run generate
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./dist
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
