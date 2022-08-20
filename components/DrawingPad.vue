@@ -4,8 +4,8 @@
       <canvas
         id="canvas"
         class="border rounded border-dark h-100 w-100"
-        height="100"
-        width="100"
+        height="400"
+        width="400"
         style="touch-action: none"
         @touchstart="startPainting"
         @touchmove="draw"
