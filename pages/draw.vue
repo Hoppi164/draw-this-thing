@@ -67,7 +67,7 @@
 
 <script>
 const simplify = require('simplify-path')
-const tolerance = 2
+const tolerance = 1
 export default {
   name: 'DrawPage',
   data() {
