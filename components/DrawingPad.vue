@@ -6,6 +6,9 @@
         class="border rounded border-dark h-100 w-100"
         height="100"
         width="100"
+        @touchstart="startPainting"
+        @touchmove="draw"
+        @touchend="finishedPainting"
         @mousedown="startPainting"
         @mousemove="draw"
         @mouseup="finishedPainting"
@@ -40,15 +43,25 @@ export default {
   },
   methods: {
     getX(e) {
+      const clientX =
+        e.clientX ||
+        (e.targetTouches[0]
+          ? e.targetTouches[0].pageX
+          : e.changedTouches[e.changedTouches.length - 1].pageX)
       const rect = this.canvas.getBoundingClientRect()
       return (
-        ((e.clientX - rect.left) / (rect.right - rect.left)) * this.canvas.width
+        ((clientX - rect.left) / (rect.right - rect.left)) * this.canvas.width
       )
     },
     getY(e) {
+      const clientY =
+        e.clientY ||
+        (e.targetTouches[0]
+          ? e.targetTouches[0].pageY
+          : e.changedTouches[e.changedTouches.length - 1].pageY)
       const rect = this.canvas.getBoundingClientRect()
       return (
-        ((e.clientY - rect.top) / (rect.bottom - rect.top)) * this.canvas.height
+        ((clientY - rect.top) / (rect.bottom - rect.top)) * this.canvas.height
       )
     },
     startPainting(e) {
