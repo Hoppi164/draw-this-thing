@@ -5,9 +5,9 @@
         <h5>Draw a {{ prompt }}</h5>
         <DrawingPad :paths.sync="paths"></DrawingPad>
         <b-button variant="primary" class="w-100">Submit Drawing</b-button>
-        <b-button v-b-toggle.debugInfo variant="secondary" class="w-100 mt-2"
-          >View Debug Info</b-button
-        >
+        <b-button v-b-toggle.debugInfo variant="secondary" class="w-100 mt-2">
+          View Debug Info
+        </b-button>
       </div>
 
       <div class="col-12 mt-2 mb-5">
