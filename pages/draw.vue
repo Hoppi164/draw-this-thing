@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12 col-md-6">
-        <h5>Draw Here</h5>
+        <h5>Draw a {{ prompt }}</h5>
         <DrawingPad :paths.sync="paths"></DrawingPad>
       </div>
 
@@ -66,13 +66,17 @@
 </template>
 
 <script>
+import randomPrompt from '~/mixins/randomPrompt.js'
 const simplify = require('simplify-path')
 const tolerance = 1
+
 export default {
   name: 'DrawPage',
+  mixins: [randomPrompt],
   data() {
     return {
       paths: [],
+      prompt: 'xx',
     }
   },
   computed: {
@@ -94,6 +98,9 @@ export default {
       }
       return ((this.simplifiedSize / this.originalSize) * 100).toFixed(0)
     },
+  },
+  created() {
+    this.prompt = this.randomPrompt()
   },
 }
 </script>
