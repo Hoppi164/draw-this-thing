@@ -49,7 +49,8 @@ export default {
         },
         services: {
           auth: true,
-          firebase: true,
+          firestore: true,
+          analytics: true,
         },
       },
     ],

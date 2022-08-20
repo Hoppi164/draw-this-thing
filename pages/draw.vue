@@ -4,7 +4,9 @@
       <div class="text-center">
         <h5>Draw a {{ prompt }}</h5>
         <DrawingPad :paths.sync="paths"></DrawingPad>
-        <b-button variant="primary" class="w-100">Submit Drawing</b-button>
+        <b-button variant="primary" class="w-100" @click="submitDrawing">
+          Submit Drawing
+        </b-button>
         <b-button v-b-toggle.debugInfo variant="secondary" class="w-100 mt-2">
           View Debug Info
         </b-button>
@@ -96,6 +98,29 @@ export default {
   },
   created() {
     this.prompt = this.randomPrompt()
+  },
+  methods: {
+    async submitDrawing() {
+      try {
+        await this.$fire.firestore.collection('drawings').add({
+          prompt: this.prompt,
+          paths: this.simplifiedPaths.map((path) => {
+            return path.toString()
+          }),
+          user: 'anonymous - pre auth',
+        })
+        this.$fire.analytics.logEvent('join_group', {
+          AnalyticsParameterGroupID: this.prompt,
+        })
+        alert(
+          "I've saved your drawing in the database, I'm still working on the 'previous games' page, so check back in a few weeks"
+        )
+      } catch (error) {
+        this.$fire.analytics.logEvent('exception', {
+          description: error,
+        })
+      }
+    },
   },
 }
 </script>
