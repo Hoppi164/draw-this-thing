@@ -35,6 +35,25 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+
+          apiKey: "AIzaSyBcSW1HDZxL3KykfH9bjXF4twA85mBJTRY",
+          authDomain: "draw-this-thing.firebaseapp.com",
+          projectId: "draw-this-thing",
+          storageBucket: "draw-this-thing.appspot.com",
+          messagingSenderId: "429041476646",
+          appId: "1:429041476646:web:defe8fc5df2b0c3379b2e7",
+          measurementId: "G-LGNCCD299Q"
+        },
+        services: {
+          auth: true,
+          firebase: true
+        }
+      }
+    ]
   ],
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa

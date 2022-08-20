@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "export NODE_OPTIONS=--openssl-legacy-provider && nuxt",
     "build": "nuxt build",
+    "emulate": "firebase emulators:start",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
@@ -14,10 +15,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@nuxtjs/firebase": "^8.2.2",
     "@nuxtjs/pwa": "^3.3.5",
     "bootstrap": "^4.6.1",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.19.3",
+    "firebase": "^9.9.3",
     "nuxt": "^2.15.8",
     "simplify-path": "^1.1.0",
     "vue": "^2.6.14",
