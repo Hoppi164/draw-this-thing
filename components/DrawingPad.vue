@@ -45,10 +45,9 @@ export default {
   methods: {
     getX(e) {
       const clientX =
-        e.clientX ||
-        (e.targetTouches[0]
-          ? e.targetTouches[0].pageX
-          : e.changedTouches[e.changedTouches.length - 1].pageX)
+        (e.targetTouches?.[0]
+          ? e.targetTouches?.[0].pageX
+          : e.changedTouches?.[e.changedTouches.length - 1].pageX) || e.clientX
       const rect = this.canvas.getBoundingClientRect()
       return (
         ((clientX - rect.left) / (rect.right - rect.left)) * this.canvas.width
@@ -56,10 +55,9 @@ export default {
     },
     getY(e) {
       const clientY =
-        e.clientY ||
-        (e.targetTouches[0]
-          ? e.targetTouches[0].pageY
-          : e.changedTouches[e.changedTouches.length - 1].pageY)
+        (e.targetTouches?.[0]
+          ? e.targetTouches?.[0].pageY
+          : e.changedTouches?.[e.changedTouches.length - 1].pageY) || e.clientY
       const rect = this.canvas.getBoundingClientRect()
       return (
         ((clientY - rect.top) / (rect.bottom - rect.top)) * this.canvas.height
