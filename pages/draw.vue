@@ -1,25 +1,20 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-12 col-md-6">
+    <div class="row justify-content-center">
+      <div class="text-center">
         <h5>Draw a {{ prompt }}</h5>
         <DrawingPad :paths.sync="paths"></DrawingPad>
-      </div>
-
-      <div class="col-12 col-md-6">
-        <h5>SVG Output</h5>
-        <ImageCard :paths="simplifiedPaths"></ImageCard>
+        <b-button variant="primary" class="w-100">Submit Drawing</b-button>
+        <b-button v-b-toggle.debugInfo variant="secondary" class="w-100 mt-2"
+          >View Debug Info</b-button
+        >
       </div>
 
       <div class="col-12 mt-2 mb-5">
         <div>
-          <b-button v-b-toggle.debugInfo variant="primary" class="w-100"
-            >View Debug Info</b-button
-          >
-
           <b-collapse id="debugInfo" class="mt-2">
             <div class="row">
-              <div class="col-4">
+              <div class="col-12 col-md-4">
                 <b-card header="Paths">
                   <pre class="card-text">
                 <code>
@@ -29,7 +24,7 @@
                 </b-card>
               </div>
 
-              <div class="col-4">
+              <div class="col-12 col-md-4">
                 <b-card header="Simplified Paths">
                   <pre class="card-text">
                 <code>
@@ -39,7 +34,7 @@
                 </b-card>
               </div>
 
-              <div class="col-4">
+              <div class="col-12 col-md-4">
                 <b-card header="Compression Efficiency">
                   <div class="card-text">
                     <strong>Original Path:</strong>
