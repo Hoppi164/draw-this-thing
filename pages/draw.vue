@@ -113,7 +113,7 @@ export default {
           AnalyticsParameterGroupID: this.prompt,
         })
         alert(
-          "I've saved your drawing in the database, I'm still working on the 'previous games' page, so check back in a few weeks"
+          "I've saved your drawing in the database, you can view it on the '/previous-games' page"
         )
       } catch (error) {
         this.$fire.analytics.logEvent('exception', {
