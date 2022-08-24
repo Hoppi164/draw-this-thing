@@ -1,3 +1,5 @@
+const isLocalDev = process.env.NODE_ENV === 'development'
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -48,9 +50,15 @@ export default {
           measurementId: 'G-LGNCCD299Q',
         },
         services: {
-          auth: true,
-          firestore: true,
-          analytics: true,
+          auth: {
+            emulatorPort: isLocalDev ? 9099 : undefined,
+            emulatorHost: 'http://localhost',
+          },
+          firestore: {
+            emulatorPort: isLocalDev ? 8080 : undefined,
+            emulatorHost: 'localhost',
+          },
+          analytics: !isLocalDev,
         },
       },
     ],
