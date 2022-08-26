@@ -2,6 +2,7 @@ import { vuexfireMutations, firestoreAction } from 'vuexfire'
 
 export const state = () => ({
   drawings: [],
+  user: null,
 })
 
 export const mutations = {
@@ -9,6 +10,20 @@ export const mutations = {
   SET_DRAWINGS: (state, drawings) => {
     // Only needed for SSR/Universal Mode
     state.drawings = drawings
+  },
+
+  ON_AUTH_STATE_CHANGED_MUTATION: (state, { authUser, claims }) => {
+    if (!authUser) {
+      state.user = null
+      return
+    }
+    const { uid, email, emailVerified } = authUser
+    state.user = {
+      uid,
+      email,
+      emailVerified,
+      claims,
+    }
   },
 }
 export const actions = {
@@ -20,10 +35,25 @@ export const actions = {
   unbindDrawings: firestoreAction(function ({ unbindFirestoreRef }) {
     unbindFirestoreRef('drawings', false)
   }),
+
+  onAuthStateChangedAction: (ctx, { authUser, claims }) => {
+    if (!authUser) {
+      ctx.commit('ON_AUTH_STATE_CHANGED_MUTATION', { authUser, claims })
+    } else {
+      ctx.commit('ON_AUTH_STATE_CHANGED_MUTATION', { authUser, claims })
+      // Do something with the authUser and the claims object...
+    }
+  },
 }
 
 export const getters = {
   drawings(state) {
     return state.drawings
+  },
+  isLoggedIn: (state) => {
+    return !!state?.user?.uid
+  },
+  user: (state) => {
+    return state.user
   },
 }

@@ -6,7 +6,6 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-        <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-navbar-nav class="border-right">
             <b-nav-item to="/draw">Draw</b-nav-item>
@@ -15,16 +14,55 @@
           </b-navbar-nav>
 
           <b-nav-item-dropdown right>
-            <!-- Using 'button-content' slot -->
             <template #button-content>
-              <em>User</em>
+              <b-avatar size="sm"></b-avatar>
+              <em>Account</em>
             </template>
 
-            <b-dropdown-item href="#">Sign In (Coming Soon)</b-dropdown-item>
-            <b-dropdown-item href="#">Sign Out (Coming Soon)</b-dropdown-item>
+            <!-- If Logged In -->
+            <b-dropdown-text v-if="isLoggedIn">
+              <em>
+                {{ user?.claims?.name }}
+              </em>
+            </b-dropdown-text>
+            <b-dropdown-divider v-if="isLoggedIn"></b-dropdown-divider>
+            <b-dropdown-item-button v-if="isLoggedIn" @click="logout">
+              Sign Out
+            </b-dropdown-item-button>
+
+            <!-- If Not Logged In -->
+            <b-dropdown-item v-if="!isLoggedIn" href="/login">
+              Sign In
+            </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
   </div>
 </template>
+<script>
+import { mapState, mapGetters } from 'vuex'
+
+export default {
+  name: 'PageNavbar',
+  computed: {
+    ...mapState({
+      user: (state) => state.user,
+    }),
+
+    ...mapGetters({
+      isLoggedIn: 'isLoggedIn',
+    }),
+  },
+
+  methods: {
+    async logout() {
+      try {
+        await this.$fire.auth.signOut()
+      } catch (e) {
+        alert(e)
+      }
+    },
+  },
+}
+</script>
