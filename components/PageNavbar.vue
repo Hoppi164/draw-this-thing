@@ -31,7 +31,7 @@
             </b-dropdown-item-button>
 
             <!-- If Not Logged In -->
-            <b-dropdown-item v-if="!isLoggedIn" href="/login">
+            <b-dropdown-item v-if="!isLoggedIn" to="/login">
               Sign In
             </b-dropdown-item>
           </b-nav-item-dropdown>
