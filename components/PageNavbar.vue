@@ -9,7 +9,6 @@
         <b-navbar-nav class="ml-auto">
           <b-navbar-nav class="border-right">
             <b-nav-item to="/draw">Draw</b-nav-item>
-            <b-nav-item to="/vote">Vote</b-nav-item>
             <b-nav-item to="/previous-games">Previous Games</b-nav-item>
           </b-navbar-nav>
 
