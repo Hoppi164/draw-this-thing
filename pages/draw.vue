@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import randomPrompt from '~/mixins/randomPrompt.js'
 const simplify = require('simplify-path')
 const tolerance = 1
@@ -77,6 +78,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      isLoggedIn: 'isLoggedIn',
+    }),
+
     simplifiedPaths() {
       return this.paths.map((path) => simplify(path, tolerance))
     },
@@ -97,6 +102,9 @@ export default {
     },
   },
   created() {
+    if (!this.isLoggedIn) {
+      this.$router.replace('/login')
+    }
     this.prompt = this.randomPrompt()
   },
   methods: {
