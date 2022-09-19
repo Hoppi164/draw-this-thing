@@ -12,6 +12,7 @@ module.exports = {
   plugins: [],
   // add your custom rules here
   rules: {
+    'no-console': 'off',
     'vue/multi-word-component-names': [
       'error',
       {

@@ -116,6 +116,7 @@ export default {
           "I've saved your drawing in the database, you can view it on the '/previous-games' page"
         )
       } catch (error) {
+        console.error(error)
         this.$fire.analytics.logEvent('exception', {
           description: error,
         })
