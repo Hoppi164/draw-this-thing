@@ -13,8 +13,25 @@
         </div>
 
         <div v-else>
-          <p>You are logged in as {{ user.email }}.</p>
-          <b-btn color="primary" outlined @click="logout">Logout</b-btn>
+          <b-card class="mt-3" header="Logged In">
+            <div class="row">
+              <div class="col-12">
+                <p>You are logged in as {{ user.email }}.</p>
+              </div>
+              <b-btn
+                class="col-12 mt-2"
+                variant="primary"
+                @click="redirectToDrawPage()"
+                >Start Drawing!</b-btn
+              >
+              <b-btn
+                class="col-12 mt-2"
+                variant="outline-danger"
+                @click="logout"
+                >Logout</b-btn
+              >
+            </div>
+          </b-card>
         </div>
       </div>
     </div>
@@ -53,7 +70,7 @@ export default {
       const uiConfig = {
         callbacks: {
           signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-            return true
+            return false
           },
           uiShown: () => {
             this.prebuiltAuthIsLoaded = true
@@ -85,6 +102,10 @@ export default {
       } catch (e) {
         alert(e)
       }
+    },
+
+    redirectToDrawPage() {
+      this.$router.push('/draw')
     },
   },
 }
